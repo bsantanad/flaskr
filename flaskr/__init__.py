@@ -35,8 +35,8 @@ def create_app(test_config = None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    @app.route('/hello')
-    def hello():
+    @app.route('/index')
+    def index():
         return 'hello world'
 
     return app

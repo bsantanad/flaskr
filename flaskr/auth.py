@@ -2,7 +2,7 @@ import functools
 
 import flask
 import werkzeug.security
-import flask.db
+import flaskr.db
 
 # creates blueprint
 # (
@@ -18,7 +18,7 @@ def register():
     if flask.request.method == 'POST':
         username = flask.request.form['username']
         password = flask.request.form['password']
-        db = flask.db.get_db()
+        db = flaskr.db.get_db()
         error = None
 
         if not username:
@@ -51,7 +51,7 @@ def login():
     if flask.request.method == 'POST':
         username = flask.request.form['username']
         passwd = flask.request.form['password']
-        db = flask.db.get_db()
+        db = flaskr.db.get_db()
         error = None
 
         user = db.execute(
@@ -61,7 +61,7 @@ def login():
 
         if user is None:
             error = 'incorrect username'
-        if not werkzeug.security.check_password_hash(user['password'], passwd):
+        if not werkzeug.security.check_password_hash(user[2], passwd):
             error = 'incorrect password'
 
         if error is None:
@@ -71,7 +71,7 @@ def login():
             # the browser then sends it back with subsequent requests. Flask
             # securely signs the data so that it can’t be tampered with.
             flask.session.clear()
-            flask.session['user_id'] = user['id']
+            flask.session['user_id'] = user[0]
             return flask.redirect(flask.url_for('index'))
 
         flask.flash(error)
@@ -86,14 +86,14 @@ def load_logged_in_user():
     if user_id is None:
         flask.g.user = None
     else:
-        flask.g.user = get_db().execute(
-            'SELECT * FROM user WEHRE id = ?',
+        flask.g.user = flaskr.db.get_db().execute(
+            'SELECT * FROM user WHERE id = ?',
             (user_id,)
         ).fetchone()
 
 @bp.route('/logout')
 def logout():
-    session.clear()
+    flask.session.clear()
     return flask.redirect(flask.url_for('index'))
 
 def login_required(view):
