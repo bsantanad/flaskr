@@ -14,8 +14,7 @@ def get_db():
             detect_types = sqlite3.PARSE_DECLTYPES,
         )
         # return rows that behave like dicts
-        # FIXME check why is this not working, it is returning tuple not dict
-        flask.g.row_factory = sqlite3.Row
+        flask.g.db.row_factory = sqlite3.Row
     return flask.g.db
 
 def close_db(e = None):
