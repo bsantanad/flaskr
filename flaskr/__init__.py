@@ -35,8 +35,9 @@ def create_app(test_config = None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    @app.route('/index')
-    def index():
-        return 'hello world'
+    from . import blog
+    app.register_blueprint(blog.bp)
+    # this makes blog.index or index the same when using url_for
+    app.add_url_rule('/', endpoint = 'index')
 
     return app
