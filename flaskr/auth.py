@@ -103,8 +103,8 @@ def login_required(view):
     '''
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if flask.g.user in None:
+        if flask.g.user is None:
             return flask.redirect(flask.url_for('auth.login'))
-        return views(**kwargs)    
+        return view(**kwargs)
 
     return wrapped_view
