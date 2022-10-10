@@ -40,4 +40,8 @@ def create_app(test_config = None):
     # this makes blog.index or index the same when using url_for
     app.add_url_rule('/', endpoint = 'index')
 
+    @app.route('/hello')
+    def hello():
+        return 'hello world'
+
     return app
