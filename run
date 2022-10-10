@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#! /app/.heroku/python/bin/python
 import bjoern
 import flaskr
 
